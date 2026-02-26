@@ -87,7 +87,7 @@ export function Footer() {
         </div>
         <div className="mt-8 border-t border-border pt-6 text-center text-sm text-muted-foreground">
           &copy; 2026 SolusiKos — Platform Kos Rebana Metropolitan. Developed
-          with passion by Undergrowth.studio.
+          with passion by Undergrowth.studio. For demonstration only.
         </div>
       </div>
     </footer>
