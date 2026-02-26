@@ -6,6 +6,7 @@ const variants: Record<string, string> = {
   lunas: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
   selesai: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
   menunggu: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+  dikonfirmasi: "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400",
   dikerjakan: "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400",
   belum_bayar: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
   gagal: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",

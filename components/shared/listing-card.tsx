@@ -1,20 +1,12 @@
 "use client"
 
 import Link from "next/link"
-import { MapPin, Star, Users, Wifi, Wind, Bath } from "lucide-react"
+import { MapPin, Star, Users, Wifi, Wind, Bath, Calendar } from "lucide-react"
 import type { Property } from "@/lib/types"
-import { formatRupiah, roomTypeLabel, getUser } from "@/lib/mock-data"
+import { formatRupiah, roomTypeLabel, regionLabel, rentalPeriodLabel, getUser } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 
-const amenityIcons: Record<string, React.ElementType> = {
-  WiFi: Wifi,
-  AC: Wind,
-  "Kamar Mandi Dalam": Bath,
-}
-
 export function ListingCard({ property }: { property: Property }) {
-  const owner = getUser(property.ownerId)
-
   const gradients: Record<string, string> = {
     "prop-1": "from-amber-400 to-orange-500",
     "prop-2": "from-pink-400 to-rose-500",
@@ -26,16 +18,17 @@ export function ListingCard({ property }: { property: Property }) {
     "prop-8": "from-teal-400 to-cyan-500",
     "prop-9": "from-indigo-400 to-blue-500",
     "prop-10": "from-yellow-400 to-amber-500",
+    "prop-11": "from-cyan-400 to-blue-500",
   }
 
   return (
     <Link
       href={`/kos/${property.id}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:shadow-lg hover:border-primary/30"
+      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:shadow-lg hover:border-primary/30 hover:-translate-y-0.5"
     >
       {/* Image placeholder */}
       <div className={cn(
-        "relative h-48 bg-gradient-to-br",
+        "relative h-48 bg-gradient-to-br transition-transform",
         gradients[property.id] ?? "from-amber-400 to-orange-500"
       )}>
         <div className="absolute inset-0 flex items-center justify-center opacity-20">
@@ -61,8 +54,10 @@ export function ListingCard({ property }: { property: Property }) {
             </span>
           )}
         </div>
-        <div className="absolute bottom-3 right-3 rounded-full bg-black/50 px-2.5 py-0.5 text-xs font-medium text-white">
-          {roomTypeLabel(property.roomType)}
+        <div className="absolute bottom-3 right-3 flex gap-1.5">
+          <span className="rounded-full bg-black/50 px-2.5 py-0.5 text-xs font-medium text-white">
+            {roomTypeLabel(property.roomType)}
+          </span>
         </div>
       </div>
 
@@ -97,6 +92,18 @@ export function ListingCard({ property }: { property: Property }) {
           )}
         </div>
 
+        {/* Rental periods */}
+        <div className="flex items-center gap-1.5 mt-1">
+          <Calendar className="h-3 w-3 text-muted-foreground" />
+          <div className="flex gap-1">
+            {property.rentalPeriods.map((rp) => (
+              <span key={rp} className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground">
+                {rentalPeriodLabel(rp)}
+              </span>
+            ))}
+          </div>
+        </div>
+
         {/* Footer */}
         <div className="mt-auto flex items-end justify-between pt-3 border-t border-border">
           <div>
@@ -105,7 +112,7 @@ export function ListingCard({ property }: { property: Property }) {
           </div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <Users className="h-3.5 w-3.5" />
-            <span>{property.availableRooms} kamar tersedia</span>
+            <span>{property.availableRooms} tersedia</span>
           </div>
         </div>
       </div>

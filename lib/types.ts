@@ -1,11 +1,13 @@
-export type Region = "kuningan" | "cirebon" | "majalengka"
+export type Region = "kota-cirebon" | "kab-cirebon" | "kuningan" | "majalengka" | "indramayu"
 export type RoomType = "putra" | "putri" | "campur"
+export type RentalPeriod = "mingguan" | "bulanan" | "tahunan"
 export type MembershipTier = "gratis" | "perak" | "emas"
 export type UserRole = "penghuni" | "pemilik" | "penyedia" | "admin"
 export type ProviderType = "laundry" | "kebersihan" | "tukang"
 export type BookingStatus = "menunggu" | "aktif" | "selesai" | "dibatalkan"
 export type PaymentStatus = "belum_bayar" | "menunggu" | "lunas" | "gagal"
 export type JobStatus = "menunggu" | "dikerjakan" | "selesai"
+export type SurveyStatus = "menunggu" | "dikonfirmasi" | "selesai" | "dibatalkan"
 
 export interface RegionData {
   id: Region
@@ -36,6 +38,8 @@ export interface Property {
   images: string[]
   amenities: string[]
   pricePerMonth: number
+  pricePerWeek?: number
+  pricePerYear?: number
   roomType: RoomType
   totalRooms: number
   availableRooms: number
@@ -44,6 +48,7 @@ export interface Property {
   rating: number
   reviewCount: number
   featured: boolean
+  rentalPeriods: RentalPeriod[]
 }
 
 export interface Booking {
@@ -56,6 +61,8 @@ export interface Booking {
   monthlyRent: number
   adminFee: number
   totalPaid: number
+  rentalPeriod: RentalPeriod
+  duration: number
   createdAt: string
 }
 
@@ -102,7 +109,7 @@ export interface AppNotification {
   userId: string
   title: string
   message: string
-  type: "booking" | "payment" | "service" | "membership" | "system"
+  type: "booking" | "payment" | "service" | "membership" | "system" | "survey" | "qna"
   read: boolean
   createdAt: string
 }
@@ -113,4 +120,34 @@ export interface MembershipPlan {
   price: number
   features: string[]
   highlighted: boolean
+}
+
+export interface SurveyVisit {
+  id: string
+  propertyId: string
+  tenantId: string
+  ownerId: string
+  date: string
+  time: string
+  status: SurveyStatus
+  notes?: string
+  createdAt: string
+}
+
+export interface QAThread {
+  id: string
+  propertyId: string
+  tenantId: string
+  question: string
+  answer?: string
+  answeredAt?: string
+  createdAt: string
+}
+
+export interface ChatMessage {
+  id: string
+  senderId: string
+  message: string
+  timestamp: string
+  isAdmin: boolean
 }

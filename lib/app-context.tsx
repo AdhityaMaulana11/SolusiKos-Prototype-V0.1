@@ -4,6 +4,7 @@ import React, { createContext, useContext, useReducer, type ReactNode } from "re
 import type {
   User, Property, Booking, Payment, ServiceRequest,
   AppNotification, BookingStatus, PaymentStatus, JobStatus, UserRole,
+  SurveyVisit, SurveyStatus, QAThread, ChatMessage,
 } from "./types"
 import {
   users as initialUsers,
@@ -12,6 +13,9 @@ import {
   payments as initialPayments,
   serviceRequests as initialServiceRequests,
   notifications as initialNotifications,
+  surveyVisits as initialSurveyVisits,
+  qaThreads as initialQAThreads,
+  adminChatMessages as initialChatMessages,
   ADMIN_FEE_PERCENTAGE,
 } from "./mock-data"
 
@@ -23,6 +27,9 @@ interface AppState {
   payments: Payment[]
   serviceRequests: ServiceRequest[]
   notifications: AppNotification[]
+  surveyVisits: SurveyVisit[]
+  qaThreads: QAThread[]
+  chatMessages: ChatMessage[]
 }
 
 type AppAction =
@@ -38,6 +45,11 @@ type AppAction =
   | { type: "MARK_ALL_NOTIFICATIONS_READ"; userId: string }
   | { type: "UPDATE_PROPERTY"; property: Property }
   | { type: "UPGRADE_MEMBERSHIP"; userId: string; tier: User["membershipTier"] }
+  | { type: "CREATE_SURVEY_VISIT"; survey: SurveyVisit }
+  | { type: "UPDATE_SURVEY_STATUS"; surveyId: string; status: SurveyStatus }
+  | { type: "ADD_QA_THREAD"; thread: QAThread }
+  | { type: "ANSWER_QA_THREAD"; threadId: string; answer: string }
+  | { type: "ADD_CHAT_MESSAGE"; message: ChatMessage }
 
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
@@ -111,19 +123,44 @@ function appReducer(state: AppState, action: AppAction): AppState {
             ? { ...state.currentUser, membershipTier: action.tier }
             : state.currentUser,
       }
+    case "CREATE_SURVEY_VISIT":
+      return { ...state, surveyVisits: [...state.surveyVisits, action.survey] }
+    case "UPDATE_SURVEY_STATUS":
+      return {
+        ...state,
+        surveyVisits: state.surveyVisits.map((sv) =>
+          sv.id === action.surveyId ? { ...sv, status: action.status } : sv
+        ),
+      }
+    case "ADD_QA_THREAD":
+      return { ...state, qaThreads: [...state.qaThreads, action.thread] }
+    case "ANSWER_QA_THREAD":
+      return {
+        ...state,
+        qaThreads: state.qaThreads.map((t) =>
+          t.id === action.threadId
+            ? { ...t, answer: action.answer, answeredAt: new Date().toISOString().split("T")[0] }
+            : t
+        ),
+      }
+    case "ADD_CHAT_MESSAGE":
+      return { ...state, chatMessages: [...state.chatMessages, action.message] }
     default:
       return state
   }
 }
 
 const initialState: AppState = {
-  currentUser: initialUsers[0], // default: tenant Rina
+  currentUser: initialUsers[0],
   users: initialUsers,
   properties: initialProperties,
   bookings: initialBookings,
   payments: initialPayments,
   serviceRequests: initialServiceRequests,
   notifications: initialNotifications,
+  surveyVisits: initialSurveyVisits,
+  qaThreads: initialQAThreads,
+  chatMessages: initialChatMessages,
 }
 
 const AppContext = createContext<{
@@ -185,6 +222,28 @@ export function useProviderJobs(providerId?: string) {
   const { state } = useApp()
   const pid = providerId ?? state.currentUser.id
   return state.serviceRequests.filter((sr) => sr.providerId === pid)
+}
+
+export function usePropertyQA(propertyId: string) {
+  const { state } = useApp()
+  return state.qaThreads.filter((t) => t.propertyId === propertyId)
+}
+
+export function usePropertySurveys(propertyId: string) {
+  const { state } = useApp()
+  return state.surveyVisits.filter((sv) => sv.propertyId === propertyId)
+}
+
+export function useOwnerSurveys(ownerId?: string) {
+  const { state } = useApp()
+  const oid = ownerId ?? state.currentUser.id
+  return state.surveyVisits.filter((sv) => sv.ownerId === oid)
+}
+
+export function useTenantSurveys(tenantId?: string) {
+  const { state } = useApp()
+  const tid = tenantId ?? state.currentUser.id
+  return state.surveyVisits.filter((sv) => sv.tenantId === tid)
 }
 
 export function getRolePath(role: UserRole): string {

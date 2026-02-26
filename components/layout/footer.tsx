@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { regions } from "@/lib/mock-data"
 
 export function Footer() {
   return (
@@ -13,15 +14,19 @@ export function Footer() {
               SolusiKos
             </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-              Platform pencarian dan pengelolaan kos terpercaya di Kuningan, Cirebon, dan Majalengka.
+              Platform pencarian dan pengelolaan kos terpercaya di kawasan Rebana Metropolitan. Melayani Kota Cirebon, Kab. Cirebon, Kuningan, Majalengka, dan Indramayu.
             </p>
           </div>
           <div>
-            <h4 className="mb-3 font-semibold text-foreground">Jelajahi</h4>
+            <h4 className="mb-3 font-semibold text-foreground">Rebana Metropolitan</h4>
             <ul className="flex flex-col gap-2 text-sm">
-              <li><Link href="/cari?region=kuningan" className="text-muted-foreground transition-colors hover:text-primary">Kos di Kuningan</Link></li>
-              <li><Link href="/cari?region=cirebon" className="text-muted-foreground transition-colors hover:text-primary">Kos di Cirebon</Link></li>
-              <li><Link href="/cari?region=majalengka" className="text-muted-foreground transition-colors hover:text-primary">Kos di Majalengka</Link></li>
+              {regions.map((r) => (
+                <li key={r.id}>
+                  <Link href={`/cari?region=${r.id}`} className="text-muted-foreground transition-colors hover:text-primary">
+                    Kos di {r.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
@@ -42,7 +47,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t border-border pt-6 text-center text-sm text-muted-foreground">
-          &copy; 2026 SolusiKos. Semua hak dilindungi. Dibuat untuk demo P2MW.
+          &copy; 2026 SolusiKos. Semua hak dilindungi. Platform kos Rebana Metropolitan. Dibuat untuk demo P2MW.
         </div>
       </div>
     </footer>

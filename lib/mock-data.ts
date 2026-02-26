@@ -1,33 +1,56 @@
 import type {
-  Region, RoomType, MembershipTier,
+  Region, RoomType, RentalPeriod, MembershipTier,
   RegionData, User, Property, Booking, Payment,
-  ServiceRequest, ProviderService, AppNotification, MembershipPlan
+  ServiceRequest, ProviderService, AppNotification, MembershipPlan,
+  SurveyVisit, QAThread, ChatMessage
 } from "./types"
 
 export const ADMIN_FEE_PERCENTAGE = 5
 
 export const regions: RegionData[] = [
   {
+    id: "kota-cirebon",
+    name: "Kota Cirebon",
+    description: "Kota udang dengan budaya yang kaya, pusat bisnis dan pendidikan di pesisir utara Jawa.",
+    gradient: "from-orange-500 to-red-500",
+    propertyCount: 3,
+  },
+  {
+    id: "kab-cirebon",
+    name: "Kabupaten Cirebon",
+    description: "Kabupaten luas dengan potensi industri dan pertanian, serta akses strategis ke jalur pantura.",
+    gradient: "from-amber-500 to-orange-600",
+    propertyCount: 2,
+  },
+  {
     id: "kuningan",
     name: "Kuningan",
     description: "Kota kecil yang asri di kaki Gunung Ciremai, cocok untuk mahasiswa dan pekerja.",
-    gradient: "from-amber-500 to-orange-600",
-    propertyCount: 4,
-  },
-  {
-    id: "cirebon",
-    name: "Cirebon",
-    description: "Kota udang dengan budaya yang kaya, pusat bisnis dan pendidikan di pesisir utara Jawa.",
-    gradient: "from-orange-500 to-red-500",
+    gradient: "from-emerald-500 to-teal-600",
     propertyCount: 3,
   },
   {
     id: "majalengka",
     name: "Majalengka",
     description: "Kabupaten yang berkembang pesat dengan bandara baru dan peluang investasi properti.",
-    gradient: "from-yellow-500 to-amber-600",
-    propertyCount: 3,
+    gradient: "from-sky-500 to-blue-600",
+    propertyCount: 2,
   },
+  {
+    id: "indramayu",
+    name: "Indramayu",
+    description: "Kabupaten pesisir utara dengan sektor perikanan dan pertanian yang kuat.",
+    gradient: "from-yellow-500 to-amber-600",
+    propertyCount: 1,
+  },
+]
+
+export const allFacilities = [
+  "WiFi", "AC", "Kipas Angin", "Kamar Mandi Dalam", "Kamar Mandi Luar",
+  "Dapur Bersama", "Dapur Lengkap", "Parkir Motor", "Parkir Mobil",
+  "CCTV", "Penjaga 24 Jam", "Laundry", "TV Kabel", "TV",
+  "Ruang Tamu", "Taman", "Rooftop", "Kolam Renang", "Gym",
+  "Antar-Jemput Bandara",
 ]
 
 export const users: User[] = [
@@ -139,6 +162,8 @@ export const properties: Property[] = [
     images: ["/placeholder-kos-1.jpg"],
     amenities: ["WiFi", "AC", "Kamar Mandi Dalam", "Dapur Bersama", "Parkir Motor", "Laundry"],
     pricePerMonth: 1500000,
+    pricePerWeek: 500000,
+    pricePerYear: 15000000,
     roomType: "campur",
     totalRooms: 12,
     availableRooms: 3,
@@ -147,6 +172,7 @@ export const properties: Property[] = [
     rating: 4.8,
     reviewCount: 45,
     featured: true,
+    rentalPeriods: ["mingguan", "bulanan", "tahunan"],
   },
   {
     id: "prop-2",
@@ -157,6 +183,8 @@ export const properties: Property[] = [
     images: ["/placeholder-kos-2.jpg"],
     amenities: ["WiFi", "AC", "Kamar Mandi Dalam", "CCTV", "Penjaga 24 Jam", "Parkir Motor"],
     pricePerMonth: 1200000,
+    pricePerWeek: 400000,
+    pricePerYear: 12000000,
     roomType: "putri",
     totalRooms: 8,
     availableRooms: 2,
@@ -165,6 +193,7 @@ export const properties: Property[] = [
     rating: 4.9,
     reviewCount: 32,
     featured: true,
+    rentalPeriods: ["bulanan", "tahunan"],
   },
   {
     id: "prop-3",
@@ -175,6 +204,8 @@ export const properties: Property[] = [
     images: ["/placeholder-kos-3.jpg"],
     amenities: ["WiFi", "Kipas Angin", "Kamar Mandi Luar", "Ruang Tamu", "Parkir Motor"],
     pricePerMonth: 800000,
+    pricePerWeek: 250000,
+    pricePerYear: 8000000,
     roomType: "putra",
     totalRooms: 15,
     availableRooms: 5,
@@ -183,16 +214,19 @@ export const properties: Property[] = [
     rating: 4.3,
     reviewCount: 18,
     featured: false,
+    rentalPeriods: ["mingguan", "bulanan"],
   },
   {
     id: "prop-4",
     name: "Kos Harmoni",
-    region: "kuningan",
-    address: "Jl. Merdeka No. 33, Kuningan",
+    region: "kab-cirebon",
+    address: "Jl. Merdeka No. 33, Sumber, Kab. Cirebon",
     description: "Kos modern minimalis dengan desain interior yang stylish, cocok untuk profesional muda.",
     images: ["/placeholder-kos-4.jpg"],
-    amenities: ["WiFi", "AC", "Kamar Mandi Dalam", "TV Kabel", "Dapur", "Parkir Mobil"],
+    amenities: ["WiFi", "AC", "Kamar Mandi Dalam", "TV Kabel", "Dapur Lengkap", "Parkir Mobil"],
     pricePerMonth: 2000000,
+    pricePerWeek: 650000,
+    pricePerYear: 20000000,
     roomType: "campur",
     totalRooms: 6,
     availableRooms: 1,
@@ -201,16 +235,19 @@ export const properties: Property[] = [
     rating: 4.7,
     reviewCount: 28,
     featured: true,
+    rentalPeriods: ["bulanan", "tahunan"],
   },
   {
     id: "prop-5",
     name: "Kos Cirebon Sejahtera",
-    region: "cirebon",
-    address: "Jl. Kartini No. 56, Cirebon",
-    description: "Kos strategis di pusat kota Cirebon, dekat stasiun kereta dan alun-alun. Cocok untuk mahasiswa dan pekerja.",
+    region: "kota-cirebon",
+    address: "Jl. Kartini No. 56, Kota Cirebon",
+    description: "Kos strategis di pusat Kota Cirebon, dekat stasiun kereta dan alun-alun. Cocok untuk mahasiswa dan pekerja.",
     images: ["/placeholder-kos-5.jpg"],
     amenities: ["WiFi", "AC", "Kamar Mandi Dalam", "Dapur Bersama", "Parkir Motor", "Rooftop"],
     pricePerMonth: 1300000,
+    pricePerWeek: 430000,
+    pricePerYear: 13000000,
     roomType: "campur",
     totalRooms: 10,
     availableRooms: 4,
@@ -219,16 +256,19 @@ export const properties: Property[] = [
     rating: 4.6,
     reviewCount: 52,
     featured: true,
+    rentalPeriods: ["mingguan", "bulanan", "tahunan"],
   },
   {
     id: "prop-6",
     name: "Kos Putri Mawar",
-    region: "cirebon",
-    address: "Jl. Pilsauddin No. 21, Cirebon",
+    region: "kota-cirebon",
+    address: "Jl. Pilsauddin No. 21, Kota Cirebon",
     description: "Kos putri elegan dengan taman yang indah dan suasana tenang.",
     images: ["/placeholder-kos-6.jpg"],
-    amenities: ["WiFi", "AC", "Kamar Mandi Dalam", "Taman", "Laundry", "Dapur"],
+    amenities: ["WiFi", "AC", "Kamar Mandi Dalam", "Taman", "Laundry", "Dapur Lengkap"],
     pricePerMonth: 1100000,
+    pricePerWeek: 370000,
+    pricePerYear: 11000000,
     roomType: "putri",
     totalRooms: 7,
     availableRooms: 2,
@@ -237,16 +277,19 @@ export const properties: Property[] = [
     rating: 4.4,
     reviewCount: 15,
     featured: false,
+    rentalPeriods: ["bulanan"],
   },
   {
     id: "prop-7",
     name: "Kos Ciremai View",
-    region: "cirebon",
-    address: "Jl. Tuparev No. 88, Cirebon",
+    region: "kota-cirebon",
+    address: "Jl. Tuparev No. 88, Kota Cirebon",
     description: "Kos premium dengan pemandangan Gunung Ciremai. Fasilitas hotel bintang 3.",
     images: ["/placeholder-kos-7.jpg"],
     amenities: ["WiFi", "AC", "Kamar Mandi Dalam", "Kolam Renang", "Gym", "Parkir Mobil", "Laundry"],
     pricePerMonth: 2500000,
+    pricePerWeek: 800000,
+    pricePerYear: 25000000,
     roomType: "campur",
     totalRooms: 20,
     availableRooms: 6,
@@ -255,6 +298,7 @@ export const properties: Property[] = [
     rating: 4.9,
     reviewCount: 78,
     featured: true,
+    rentalPeriods: ["mingguan", "bulanan", "tahunan"],
   },
   {
     id: "prop-8",
@@ -265,6 +309,8 @@ export const properties: Property[] = [
     images: ["/placeholder-kos-8.jpg"],
     amenities: ["WiFi", "Kipas Angin", "Kamar Mandi Luar", "Parkir Motor"],
     pricePerMonth: 600000,
+    pricePerWeek: 200000,
+    pricePerYear: 6000000,
     roomType: "putra",
     totalRooms: 20,
     availableRooms: 8,
@@ -273,6 +319,7 @@ export const properties: Property[] = [
     rating: 4.0,
     reviewCount: 10,
     featured: false,
+    rentalPeriods: ["mingguan", "bulanan"],
   },
   {
     id: "prop-9",
@@ -283,6 +330,8 @@ export const properties: Property[] = [
     images: ["/placeholder-kos-9.jpg"],
     amenities: ["WiFi", "AC", "Kamar Mandi Dalam", "TV", "Parkir Mobil", "Antar-Jemput Bandara"],
     pricePerMonth: 1800000,
+    pricePerWeek: 600000,
+    pricePerYear: 18000000,
     roomType: "campur",
     totalRooms: 8,
     availableRooms: 3,
@@ -291,16 +340,19 @@ export const properties: Property[] = [
     rating: 4.5,
     reviewCount: 22,
     featured: true,
+    rentalPeriods: ["mingguan", "bulanan", "tahunan"],
   },
   {
     id: "prop-10",
     name: "Kos Keluarga Bahagia",
-    region: "majalengka",
-    address: "Jl. Siti Armilah No. 30, Majalengka",
+    region: "kab-cirebon",
+    address: "Jl. Siti Armilah No. 30, Plered, Kab. Cirebon",
     description: "Kos keluarga dengan suasana homey dan dapur lengkap. Dekat pasar tradisional.",
     images: ["/placeholder-kos-10.jpg"],
     amenities: ["WiFi", "Kipas Angin", "Kamar Mandi Dalam", "Dapur Lengkap", "Taman", "Parkir Motor"],
     pricePerMonth: 900000,
+    pricePerWeek: 300000,
+    pricePerYear: 9000000,
     roomType: "campur",
     totalRooms: 10,
     availableRooms: 4,
@@ -309,6 +361,28 @@ export const properties: Property[] = [
     rating: 4.2,
     reviewCount: 14,
     featured: false,
+    rentalPeriods: ["bulanan", "tahunan"],
+  },
+  {
+    id: "prop-11",
+    name: "Kos Indramayu Permai",
+    region: "indramayu",
+    address: "Jl. Raya Pabean No. 10, Indramayu",
+    description: "Kos bersih dan terjangkau di pusat Kota Indramayu, dekat kawasan industri dan pelabuhan.",
+    images: ["/placeholder-kos-11.jpg"],
+    amenities: ["WiFi", "Kipas Angin", "Kamar Mandi Dalam", "Parkir Motor", "Dapur Bersama"],
+    pricePerMonth: 700000,
+    pricePerWeek: 230000,
+    pricePerYear: 7000000,
+    roomType: "campur",
+    totalRooms: 14,
+    availableRooms: 6,
+    ownerId: "o3",
+    membershipTier: "gratis",
+    rating: 4.1,
+    reviewCount: 8,
+    featured: false,
+    rentalPeriods: ["bulanan", "tahunan"],
   },
 ]
 
@@ -323,6 +397,8 @@ export const bookings: Booking[] = [
     monthlyRent: 1500000,
     adminFee: 75000,
     totalPaid: 4725000,
+    rentalPeriod: "bulanan",
+    duration: 6,
     createdAt: "2026-01-10",
   },
   {
@@ -335,6 +411,8 @@ export const bookings: Booking[] = [
     monthlyRent: 1300000,
     adminFee: 65000,
     totalPaid: 2730000,
+    rentalPeriod: "bulanan",
+    duration: 6,
     createdAt: "2026-01-25",
   },
   {
@@ -347,6 +425,8 @@ export const bookings: Booking[] = [
     monthlyRent: 1800000,
     adminFee: 90000,
     totalPaid: 0,
+    rentalPeriod: "bulanan",
+    duration: 3,
     createdAt: "2026-02-20",
   },
 ]
@@ -477,6 +557,100 @@ export const notifications: AppNotification[] = [
   { id: "n-5", userId: "o1", title: "Pembayaran Diterima", message: "Rina Susanti telah membayar sewa bulan Maret untuk Kos Melati Indah.", type: "payment", read: true, createdAt: "2026-03-13" },
   { id: "n-6", userId: "p3", title: "Pekerjaan Baru", message: "Budi Pratama membutuhkan perbaikan keran di Kos Cirebon Sejahtera.", type: "service", read: false, createdAt: "2026-03-05" },
   { id: "n-7", userId: "t2", title: "Pembayaran Menunggu", message: "Pembayaran via OVO sedang diproses. Kami akan mengirim konfirmasi secepatnya.", type: "payment", read: false, createdAt: "2026-03-15" },
+  { id: "n-8", userId: "t1", title: "Sewa Akan Jatuh Tempo", message: "Pembayaran sewa bulan depan akan jatuh tempo dalam 7 hari. Segera lakukan pembayaran.", type: "payment", read: false, createdAt: "2026-04-08" },
+  { id: "n-9", userId: "o1", title: "Membership Segera Berakhir", message: "Paket Membership Emas Anda akan berakhir dalam 14 hari. Perpanjang sekarang untuk tetap menikmati fitur premium.", type: "membership", read: false, createdAt: "2026-04-01" },
+]
+
+export const surveyVisits: SurveyVisit[] = [
+  {
+    id: "sv-1",
+    propertyId: "prop-1",
+    tenantId: "t3",
+    ownerId: "o1",
+    date: "2026-03-10",
+    time: "10:00",
+    status: "dikonfirmasi",
+    notes: "Ingin melihat kamar lantai 2",
+    createdAt: "2026-03-05",
+  },
+  {
+    id: "sv-2",
+    propertyId: "prop-5",
+    tenantId: "t1",
+    ownerId: "o1",
+    date: "2026-03-15",
+    time: "14:00",
+    status: "menunggu",
+    createdAt: "2026-03-08",
+  },
+]
+
+export const qaThreads: QAThread[] = [
+  {
+    id: "qa-1",
+    propertyId: "prop-1",
+    tenantId: "t2",
+    question: "Apakah tersedia parkir untuk mobil? Saya membawa kendaraan roda empat.",
+    answer: "Maaf, saat ini kami hanya menyediakan parkir motor. Namun ada lahan parkir umum di sebelah kos yang bisa digunakan.",
+    answeredAt: "2026-02-16",
+    createdAt: "2026-02-15",
+  },
+  {
+    id: "qa-2",
+    propertyId: "prop-1",
+    tenantId: "t3",
+    question: "Apakah boleh membawa hewan peliharaan?",
+    createdAt: "2026-03-01",
+  },
+  {
+    id: "qa-3",
+    propertyId: "prop-5",
+    tenantId: "t1",
+    question: "Jam berapa batas tamu berkunjung?",
+    answer: "Tamu diperbolehkan berkunjung hingga pukul 22.00 WIB. Setelah itu, tamu tidak diperkenankan berada di area kos.",
+    answeredAt: "2026-02-21",
+    createdAt: "2026-02-20",
+  },
+  {
+    id: "qa-4",
+    propertyId: "prop-7",
+    tenantId: "t2",
+    question: "Apakah kolam renang bisa digunakan setiap hari?",
+    answer: "Ya, kolam renang buka setiap hari dari pukul 06.00 - 20.00 WIB untuk seluruh penghuni.",
+    answeredAt: "2026-03-02",
+    createdAt: "2026-03-01",
+  },
+]
+
+export const adminChatMessages: ChatMessage[] = [
+  {
+    id: "cm-1",
+    senderId: "t1",
+    message: "Halo admin, saya ingin bertanya tentang proses perpanjangan sewa.",
+    timestamp: "2026-03-10 09:00",
+    isAdmin: false,
+  },
+  {
+    id: "cm-2",
+    senderId: "a1",
+    message: "Halo Rina! Untuk perpanjangan sewa, Anda bisa langsung mengajukan melalui dashboard penghuni di menu Booking. Pilih opsi perpanjangan dan ikuti langkah-langkahnya.",
+    timestamp: "2026-03-10 09:05",
+    isAdmin: true,
+  },
+  {
+    id: "cm-3",
+    senderId: "t1",
+    message: "Baik, terima kasih infonya! Apakah ada biaya tambahan untuk perpanjangan?",
+    timestamp: "2026-03-10 09:10",
+    isAdmin: false,
+  },
+  {
+    id: "cm-4",
+    senderId: "a1",
+    message: "Tidak ada biaya tambahan. Harga sewa tetap sama sesuai yang tertera di listing. Biaya admin juga tetap 5% dari sewa bulanan.",
+    timestamp: "2026-03-10 09:12",
+    isAdmin: true,
+  },
 ]
 
 export const membershipPlans: MembershipPlan[] = [
@@ -550,6 +724,11 @@ export function roomTypeLabel(t: RoomType): string {
   return labels[t]
 }
 
+export function rentalPeriodLabel(p: RentalPeriod): string {
+  const labels: Record<RentalPeriod, string> = { mingguan: "Mingguan", bulanan: "Bulanan", tahunan: "Tahunan" }
+  return labels[p]
+}
+
 export function membershipLabel(t: MembershipTier): string {
   const labels: Record<MembershipTier, string> = { gratis: "Gratis", perak: "Perak", emas: "Emas" }
   return labels[t]
@@ -565,6 +744,7 @@ export function statusLabel(s: string): string {
     lunas: "Lunas",
     gagal: "Gagal",
     dikerjakan: "Dikerjakan",
+    dikonfirmasi: "Dikonfirmasi",
   }
   return labels[s] ?? s
 }

@@ -8,7 +8,7 @@ import { Footer } from "@/components/layout/footer"
 import { ListingCard, ListingCardSkeleton } from "@/components/shared/listing-card"
 import { useApp } from "@/lib/app-context"
 import { regions } from "@/lib/mock-data"
-import { Search, ArrowRight, MapPin, Shield, Headphones } from "lucide-react"
+import { Search, ArrowRight, MapPin, Shield, Headphones, CalendarSearch, MessageSquare } from "lucide-react"
 
 export default function HomePage() {
   const { state } = useApp()
@@ -40,15 +40,19 @@ export default function HomePage() {
         </div>
         <div className="relative mx-auto max-w-7xl px-4 py-20 md:py-28">
           <div className="mx-auto max-w-2xl text-center">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">
+              <MapPin className="h-3.5 w-3.5" />
+              Rebana Metropolitan
+            </div>
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl text-balance">
-              Cari <span className="text-primary">Kos Impianmu</span> dengan Mudah
+              Cari <span className="text-primary">Kos Impianmu</span> di Rebana Metropolitan
             </h1>
             <p className="mt-4 text-lg text-muted-foreground leading-relaxed text-pretty">
-              Platform pencarian dan pengelolaan kos terpercaya di Kuningan, Cirebon, dan Majalengka. Temukan tempat tinggal yang nyaman dan terjangkau.
+              Platform pencarian dan pengelolaan kos terpercaya di kawasan Rebana Metropolitan (Kota Cirebon, Kab. Cirebon, Kuningan, Majalengka, Indramayu). Temukan tempat tinggal nyaman dan terjangkau.
             </p>
 
             {/* Search bar */}
-            <form onSubmit={handleSearch} className="mt-8 flex items-center gap-2 rounded-xl border border-border bg-card p-2 shadow-lg">
+            <form onSubmit={handleSearch} className="mt-8 flex items-center gap-2 rounded-xl border border-border bg-card p-2 shadow-lg transition-shadow hover:shadow-xl">
               <div className="flex flex-1 items-center gap-2 px-3">
                 <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
                 <input
@@ -61,7 +65,7 @@ export default function HomePage() {
               </div>
               <button
                 type="submit"
-                className="shrink-0 rounded-lg bg-primary px-6 py-2.5 font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                className="shrink-0 rounded-lg bg-primary px-6 py-2.5 font-semibold text-primary-foreground transition-all hover:bg-primary/90 active:scale-95"
               >
                 Cari
               </button>
@@ -69,11 +73,11 @@ export default function HomePage() {
 
             <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
               <span>Populer:</span>
-              {["WiFi", "AC", "Putri", "Murah"].map((tag) => (
+              {["WiFi", "AC", "Putri", "Murah", "Bulanan"].map((tag) => (
                 <Link
                   key={tag}
                   href={`/cari?q=${tag}`}
-                  className="rounded-full border border-border bg-card px-3 py-1 transition-colors hover:border-primary hover:text-primary"
+                  className="rounded-full border border-border bg-card px-3 py-1 transition-all hover:border-primary hover:text-primary hover:shadow-sm"
                 >
                   {tag}
                 </Link>
@@ -86,27 +90,27 @@ export default function HomePage() {
       {/* Region Cards */}
       <section className="mx-auto max-w-7xl px-4 py-16">
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold text-foreground sm:text-3xl">Jelajahi Berdasarkan Wilayah</h2>
-          <p className="mt-2 text-muted-foreground">Temukan kos terbaik di tiga wilayah utama kami</p>
+          <h2 className="text-2xl font-bold text-foreground sm:text-3xl text-balance">Jelajahi Rebana Metropolitan</h2>
+          <p className="mt-2 text-muted-foreground">Temukan kos terbaik di lima wilayah utama kawasan Rebana Metropolitan</p>
         </div>
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {regions.map((region) => (
             <Link
               key={region.id}
               href={`/cari?region=${region.id}`}
-              className="group relative overflow-hidden rounded-xl border border-border bg-card transition-all hover:shadow-lg hover:border-primary/30"
+              className="group relative overflow-hidden rounded-xl border border-border bg-card transition-all hover:shadow-lg hover:border-primary/30 hover:-translate-y-0.5"
             >
-              <div className={`h-40 bg-gradient-to-br ${region.gradient} transition-transform group-hover:scale-105`}>
+              <div className={`h-32 bg-gradient-to-br ${region.gradient} transition-transform group-hover:scale-105`}>
                 <div className="flex h-full items-center justify-center">
-                  <MapPin className="h-12 w-12 text-white/40" />
+                  <MapPin className="h-10 w-10 text-white/40" />
                 </div>
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-card-foreground text-lg">{region.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{region.description}</p>
-                <div className="mt-3 flex items-center gap-1 text-sm font-medium text-primary">
-                  {region.propertyCount} properti tersedia
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <div className="p-3">
+                <h3 className="font-semibold text-card-foreground">{region.name}</h3>
+                <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{region.description}</p>
+                <div className="mt-2 flex items-center gap-1 text-xs font-medium text-primary">
+                  {region.propertyCount} properti
+                  <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
             </Link>
@@ -150,14 +154,24 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-16">
         <div className="mb-12 text-center">
           <h2 className="text-2xl font-bold text-foreground sm:text-3xl">Cara Kerja SolusiKos</h2>
-          <p className="mt-2 text-muted-foreground">Tiga langkah mudah untuk menemukan kos impianmu</p>
+          <p className="mt-2 text-muted-foreground">Lima langkah mudah untuk menemukan kos impianmu</p>
         </div>
-        <div className="grid gap-8 sm:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
           {[
             {
               icon: Search,
               title: "Cari & Filter",
-              desc: "Cari kos berdasarkan wilayah, harga, tipe kamar, dan fasilitas yang kamu butuhkan.",
+              desc: "Cari kos berdasarkan wilayah Rebana Metropolitan, harga, tipe, dan fasilitas.",
+            },
+            {
+              icon: CalendarSearch,
+              title: "Survey Lokasi",
+              desc: "Jadwalkan kunjungan survey langsung ke kos yang kamu minati.",
+            },
+            {
+              icon: MessageSquare,
+              title: "Tanya Pemilik",
+              desc: "Tanyakan langsung ke pemilik kos melalui fitur Q&A yang tersedia.",
             },
             {
               icon: Shield,
@@ -167,17 +181,17 @@ export default function HomePage() {
             {
               icon: Headphones,
               title: "Layanan Lengkap",
-              desc: "Nikmati layanan tambahan seperti laundry, kebersihan, dan perbaikan langsung dari dashboard.",
+              desc: "Nikmati layanan laundry, kebersihan, dan perbaikan dari dashboard.",
             },
           ].map((step, i) => (
-            <div key={i} className="flex flex-col items-center text-center">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
-                <step.icon className="h-8 w-8 text-primary" />
+            <div key={i} className="group flex flex-col items-center text-center">
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-colors group-hover:bg-primary/20">
+                <step.icon className="h-7 w-7 text-primary" />
               </div>
               <div className="mb-1 text-xs font-bold text-primary uppercase tracking-wider">
                 Langkah {i + 1}
               </div>
-              <h3 className="mb-2 text-lg font-semibold text-foreground">{step.title}</h3>
+              <h3 className="mb-2 text-base font-semibold text-foreground">{step.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
             </div>
           ))}
@@ -188,7 +202,7 @@ export default function HomePage() {
       <section className="bg-primary">
         <div className="mx-auto max-w-7xl px-4 py-16 text-center">
           <h2 className="text-2xl font-bold text-primary-foreground sm:text-3xl text-balance">
-            Punya Kos? Daftarkan Sekarang!
+            Punya Kos di Rebana Metropolitan? Daftarkan Sekarang!
           </h2>
           <p className="mt-3 text-primary-foreground/80 max-w-md mx-auto">
             Tingkatkan hunian kos Anda dengan bergabung di SolusiKos. Kelola properti, terima pembayaran, dan lacak penghuni dengan mudah.
@@ -196,13 +210,13 @@ export default function HomePage() {
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link
               href="/daftar"
-              className="rounded-lg bg-card px-6 py-3 font-semibold text-foreground transition-colors hover:bg-card/90"
+              className="rounded-lg bg-card px-6 py-3 font-semibold text-foreground transition-all hover:bg-card/90 active:scale-95"
             >
               Daftar sebagai Pemilik
             </Link>
             <Link
               href="/membership"
-              className="rounded-lg border border-primary-foreground/30 px-6 py-3 font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+              className="rounded-lg border border-primary-foreground/30 px-6 py-3 font-semibold text-primary-foreground transition-all hover:bg-primary-foreground/10 active:scale-95"
             >
               Lihat Paket Membership
             </Link>

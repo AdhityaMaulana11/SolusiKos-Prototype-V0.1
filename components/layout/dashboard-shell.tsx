@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { useCurrentUser } from "@/lib/app-context"
 import {
   CalendarDays, CreditCard, Wrench, Bell, Home, Building2, Users, BarChart3, CheckCircle,
-  Briefcase, DollarSign, Settings, ClipboardList,
+  Briefcase, DollarSign, Settings, ClipboardList, CalendarSearch, Eye,
 } from "lucide-react"
 import type { ReactNode } from "react"
 
@@ -18,24 +18,26 @@ interface NavItem {
 
 const tenantNav: NavItem[] = [
   { href: "/dasbor/penghuni", label: "Ringkasan", icon: Home },
-  { href: "/dasbor/penghuni?tab=booking", label: "Booking Aktif", icon: CalendarDays },
+  { href: "/dasbor/penghuni?tab=booking", label: "Booking", icon: CalendarDays },
   { href: "/dasbor/penghuni?tab=pembayaran", label: "Pembayaran", icon: CreditCard },
+  { href: "/dasbor/penghuni?tab=survey", label: "Survey", icon: CalendarSearch },
   { href: "/dasbor/penghuni?tab=layanan", label: "Layanan", icon: Wrench },
   { href: "/dasbor/penghuni?tab=notifikasi", label: "Notifikasi", icon: Bell },
 ]
 
 const ownerNav: NavItem[] = [
   { href: "/dasbor/pemilik", label: "Ringkasan", icon: Home },
-  { href: "/dasbor/pemilik?tab=properti", label: "Properti Saya", icon: Building2 },
-  { href: "/dasbor/pemilik?tab=penghuni", label: "Daftar Penghuni", icon: Users },
+  { href: "/dasbor/pemilik?tab=properti", label: "Properti", icon: Building2 },
+  { href: "/dasbor/pemilik?tab=penghuni", label: "Penghuni", icon: Users },
   { href: "/dasbor/pemilik?tab=keuangan", label: "Arus Kas", icon: BarChart3 },
   { href: "/dasbor/pemilik?tab=persetujuan", label: "Persetujuan", icon: CheckCircle },
+  { href: "/dasbor/pemilik?tab=survey", label: "Survey", icon: CalendarSearch },
 ]
 
 const providerNav: NavItem[] = [
   { href: "/dasbor/penyedia", label: "Ringkasan", icon: Home },
   { href: "/dasbor/penyedia?tab=pekerjaan", label: "Pekerjaan", icon: Briefcase },
-  { href: "/dasbor/penyedia?tab=layanan", label: "Layanan Saya", icon: ClipboardList },
+  { href: "/dasbor/penyedia?tab=layanan", label: "Layanan", icon: ClipboardList },
   { href: "/dasbor/penyedia?tab=pendapatan", label: "Pendapatan", icon: DollarSign },
 ]
 
